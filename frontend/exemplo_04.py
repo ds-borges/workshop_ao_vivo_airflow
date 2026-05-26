@@ -6,8 +6,11 @@ import subprocess
 
 # Função para carregar os dados do arquivo CSV
 def load_data():
-    df = pd.read_csv("execution_logs.log")
-    return df
+    try:
+        df = pd.read_csv("execution_logs.log", header=None, names=["Logs"])
+        return df
+    except Exception:
+        return pd.DataFrame(columns=["Logs"])
 
 
 # Função para executar o script Python
@@ -19,21 +22,26 @@ def main():
     st.title("Visualização de Logs e Execução de Scripts")
     st.image("pics/AirflowLogo.png")
 
-    # Carregar os dados do arquivo CSV
+
+     # Carregar e exibir os dados SEMPRE no final para mostrar o estado atual
     df = load_data()
+    st.write("Logs de execução:")
+    st.dataframe(df, use_container_width=True)
 
-    #Exibir os dados na interface do streamlit
-    st.write("Logs de execução:", df)
+    # botões para ações
+    col1, col2 = st.columns(2)
+    
+    with col1:
+        if st.button("Atualizar dados"):
+            st.write("Dados atualizados!")
 
-    #botão para atualizar os dados
-    if st.button("Atualizar dados"):
-        df = load_data()
-        st.write("Dados atualizados com sucesso!")
+    with col2:
+        if st.button("Executar script python"):
+            with st.spinner("Executando pipeline..."):
+                run_python_script()
+                st.success("Script python executado com sucesso!")
 
-    #botão para executar script python
-    if st.button("Executar script python"):
-        run_python_script()
-        st.write("Script python executado com sucesso!")
+   
 
 if __name__ == "__main__":
     main()

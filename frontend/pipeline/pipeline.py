@@ -1,6 +1,8 @@
 from time import sleep
 from loguru import logger
 
+logger.add("execution_logs.log", format="{time:YYYY-MM-DD HH:mm:ss.SSS} | {level: <8} | {name}:{function}:{line} - {message}", level="INFO")
+
 def primeira_atividade():
         logger.info("minha primeira atividade")
         sleep(2)
