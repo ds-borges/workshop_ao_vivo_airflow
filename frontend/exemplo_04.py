@@ -8,9 +8,12 @@ import subprocess
 def load_data():
     try:
         df = pd.read_csv("execution_logs.log", header=None, names=["Logs"])
+        print("foi")
         return df
     except Exception:
+        print("aqui")
         return pd.DataFrame(columns=["Logs"])
+        
 
 
 # Função para executar o script Python
